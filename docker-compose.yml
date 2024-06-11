@@ -1,4 +1,3 @@
-version: "2"
 services:
     www:
         build: .
@@ -12,7 +11,7 @@ services:
             - default
         depends_on:
             - db
-    db:
+    mysql_db:
         image: mysql:5.7.13
         ports: 
             - "3306:3306"
@@ -26,6 +25,20 @@ services:
             - persistent:/var/lib/mysql
         networks:
             - default
+
+    postgres_db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_DB: pDb
+            POSTGRES_USER: puser
+            POSTGRES_PASSWORD: ptest
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+            - pdb:/var/lib/postgresql
+        ports:
+            - 3307:3307
+
     phpmyadmin:
         image: phpmyadmin
         links: 
@@ -40,3 +53,4 @@ services:
             
 volumes:
     persistent:
+    pdb:
