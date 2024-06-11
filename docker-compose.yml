@@ -6,11 +6,13 @@ services:
         volumes:
             - ./www:/var/www/html/
         links:
-            - db
+            - mysql_db
+            - postgres_db
         networks:
             - default
         depends_on:
-            - db
+            - mysql_db
+            - postgres_db
     mysql_db:
         image: mysql:5.7.13
         ports: 
@@ -42,7 +44,7 @@ services:
     phpmyadmin:
         image: phpmyadmin
         links: 
-            - db:db
+            - mysql_db:mysql_db
         ports:
             - 8000:80
         environment:
